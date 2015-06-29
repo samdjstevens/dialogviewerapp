@@ -52,10 +52,23 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         // Register the ContentCell class with the collection view
         collectionView?.registerClass(ContentCell.self, forCellWithReuseIdentifier: "CONTENT")
         
+        // Registe the HeaderCell class with the collection view
+        collectionView?.registerClass(HeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HEADER")
+        
         // Move the content view down from the status bar
         var contentInset = collectionView?.contentInset
         contentInset?.top = 20
         collectionView?.contentInset = contentInset!
+        
+        // Grab the collection view layout
+        let layout = collectionView?.collectionViewLayout
+        let flow = layout as! UICollectionViewFlowLayout
+        
+        // Set the section inset to give some padding
+        flow.sectionInset = UIEdgeInsetsMake(20, 20, 20, 20)
+        
+        // Set the header reference size
+        flow.headerReferenceSize = CGSizeMake(100, 25)
     }
     
     // Helper method to retrieve an array(?) of words in a string.
@@ -90,6 +103,18 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         return cell
         
+    }
+    
+    // view for the header cells
+    override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        
+        if kind == UICollectionElementKindSectionHeader {
+            let cell = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "HEADER", forIndexPath: indexPath) as! HeaderCell
+            cell.maxWidth = collectionView.bounds.size.width
+            cell.text = sections[indexPath.section]["header"]
+            return cell
+        }
+        abort()
     }
     
     // Determine the size of a cell

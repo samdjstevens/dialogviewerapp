@@ -28,4 +28,16 @@ class HeaderCell: ContentCell {
     override class func defaultFont() -> UIFont {
         return UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
     }
+    
+    // Override the parent class to get the size of the cell given the string
+    // to have full width headers
+    override class func sizeForContentString(s: String, forMaxWidth maxWidth: CGFloat) -> CGSize {
+
+        // Get the actual bounding box size
+        let size = super.sizeForContentString(s, forMaxWidth: maxWidth)
+        
+        // But then return that height, but full (max) width
+        return CGRectMake(0, 0, maxWidth, size.height).size
+
+    }
 }
